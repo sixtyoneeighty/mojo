@@ -90,8 +90,19 @@ export async function POST(request: Request) {
 
     const previousMessages = await getMessagesByChatId({ id });
 
+    // Convert DB messages to the expected AI SDK Message type
+    const formattedPreviousMessages = previousMessages.map(msg => ({
+      id: msg.id,
+      role: msg.role as 'user' | 'assistant' | 'system' | 'function' | 'tool',
+      content: '', // Add the missing content field
+      parts: msg.parts as any, // Assuming parts structure is compatible or needs further mapping
+      createdAt: msg.createdAt,
+      experimental_attachments: msg.attachments as any ?? [],
+      // Add other fields required by the 'Message' type if necessary
+    }));
+
     const messages = appendClientMessage({
-      messages: previousMessages,
+      messages: formattedPreviousMessages, // Use the formatted array
       message,
     });
 
