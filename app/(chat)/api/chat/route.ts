@@ -26,15 +26,11 @@ import { myProvider } from '@/lib/ai/providers';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
 import { postRequestBodySchema, type PostRequestBody } from './schema';
 import { TavilyClient } from '@agentic/tavily';
-import { createAISDKTools } from '@agentic/ai-sdk';
 
 export const maxDuration = 60;
 
 // Instantiate Agentic clients
 const tavily = new TavilyClient();
-
-// Create AI SDK compatible tools
-const agenticTools = createAISDKTools({ tavily });
 
 // Define the schema without selectedChatModel
 const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
@@ -139,7 +135,6 @@ export async function POST(request: Request) {
                  'createDocument',
                  'updateDocument',
                  'requestSuggestions',
-                 ...Object.keys(agenticTools), 
                ],
          experimental_transform: smoothStream({ chunking: 'word' }),
          experimental_generateMessageId: generateUUID,
@@ -151,7 +146,6 @@ export async function POST(request: Request) {
              session,
              dataStream,
            }),
-           ...agenticTools, 
          },
          onFinish: async ({ response }: { response: any }) => {
            if (session.user?.id) {

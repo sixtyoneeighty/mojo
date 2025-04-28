@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@agentic/ai-sdk':
-        specifier: latest
-        version: 7.6.4(ai@4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2))(zod@3.24.2)
       '@agentic/tavily':
         specifier: latest
         version: 7.6.4(zod@3.24.2)
@@ -260,11 +257,6 @@ importers:
         version: 5.8.2
 
 packages:
-
-  '@agentic/ai-sdk@7.6.4':
-    resolution: {integrity: sha512-oloaxSxyK+RNyJphKPbqJxkXaF44RJ19syUUwmidkAK7jCXTWkoUghaZ4upoSsOXCWhig+be3YTngZ1qqMMVXg==}
-    peerDependencies:
-      ai: ^4.3.4
 
   '@agentic/core@7.6.4':
     resolution: {integrity: sha512-WlJGBRAf5IMhnkl2G/r/sfQ2ny8Gbmijkwyb7N6uMyiA5WqSaDW82udx/ATNUaREYhb+f6KZEm5qHxTMGHMY7w==}
@@ -3934,14 +3926,6 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
-
-  '@agentic/ai-sdk@7.6.4(ai@4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2))(zod@3.24.2)':
-    dependencies:
-      '@agentic/core': 7.6.4(zod@3.24.2)
-      ai: 4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2)
-    transitivePeerDependencies:
-      - babel-plugin-macros
-      - zod
 
   '@agentic/core@7.6.4(zod@3.24.2)':
     dependencies:
