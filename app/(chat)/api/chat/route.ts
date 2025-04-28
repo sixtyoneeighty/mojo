@@ -32,25 +32,28 @@ export const maxDuration = 60;
 // Instantiate Agentic clients
 const tavily = new TavilyClient();
 
-// Define the schema without selectedChatModel
-const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
-type SimplifiedPostRequestBody = Omit<PostRequestBody, 'selectedChatModel'>;
+// Create AI SDK compatible tools
+// Remove: const agenticTools = createAISDKTools({ tavily }); 
+
+// Revert schema changes - Keep original schema
+// Remove: const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
+// Remove: type SimplifiedPostRequestBody = Omit<PostRequestBody, 'selectedChatModel'>;
 
 
 export async function POST(request: Request) {
-  let requestBody: SimplifiedPostRequestBody; // Use the simplified type
+  let requestBody: PostRequestBody; // Use original type
 
   try {
     const json = await request.json();
-    // Parse using the simplified schema
-    requestBody = simplifiedPostRequestBodySchema.parse(json);
+    // Parse using the original schema
+    requestBody = postRequestBodySchema.parse(json);
   } catch (_) {
     return new Response('Invalid request body', { status: 400 });
   }
 
   try {
-    // Remove selectedChatModel from destructuring
-    const { id, message } = requestBody;
+    // Re-add selectedChatModel to destructuring
+    const { id, message, selectedChatModel } = requestBody;
 
     const session = await auth();
 
