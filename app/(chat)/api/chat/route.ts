@@ -25,18 +25,16 @@ import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
 import { postRequestBodySchema, type PostRequestBody } from './schema';
-import { FirecrawlClient } from '@agentic/firecrawl';
 import { TavilyClient } from '@agentic/tavily';
 import { createAISDKTools } from '@agentic/ai-sdk';
 
 export const maxDuration = 60;
 
 // Instantiate Agentic clients
-const firecrawl = new FirecrawlClient();
 const tavily = new TavilyClient();
 
 // Create AI SDK compatible tools
-const agenticTools = createAISDKTools({ firecrawl, tavily });
+const agenticTools = createAISDKTools({ tavily });
 
 // Define the schema without selectedChatModel
 const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
