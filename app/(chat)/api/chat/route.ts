@@ -93,7 +93,7 @@ export async function POST(request: Request) {
     // Convert DB messages to the expected AI SDK Message type
     const formattedPreviousMessages = previousMessages.map(msg => ({
       id: msg.id,
-      role: msg.role as 'user' | 'assistant' | 'system' | 'function' | 'tool',
+      role: msg.role as 'user' | 'assistant' | 'system',
       content: '', // Add the missing content field
       parts: msg.parts as any, // Assuming parts structure is compatible or needs further mapping
       createdAt: msg.createdAt,
