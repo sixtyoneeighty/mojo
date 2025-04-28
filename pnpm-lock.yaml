@@ -8,6 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@agentic/ai-sdk':
+        specifier: latest
+        version: 7.6.4(ai@4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2))(zod@3.24.2)
+      '@agentic/firecrawl':
+        specifier: latest
+        version: 7.6.4(zod@3.24.2)
+      '@agentic/tavily':
+        specifier: latest
+        version: 7.6.4(zod@3.24.2)
       '@ai-sdk/openai':
         specifier: ^0.0.37
         version: 0.0.37(zod@3.24.2)
@@ -254,6 +263,26 @@ importers:
         version: 5.8.2
 
 packages:
+
+  '@agentic/ai-sdk@7.6.4':
+    resolution: {integrity: sha512-oloaxSxyK+RNyJphKPbqJxkXaF44RJ19syUUwmidkAK7jCXTWkoUghaZ4upoSsOXCWhig+be3YTngZ1qqMMVXg==}
+    peerDependencies:
+      ai: ^4.3.4
+
+  '@agentic/core@7.6.4':
+    resolution: {integrity: sha512-WlJGBRAf5IMhnkl2G/r/sfQ2ny8Gbmijkwyb7N6uMyiA5WqSaDW82udx/ATNUaREYhb+f6KZEm5qHxTMGHMY7w==}
+    peerDependencies:
+      zod: ^3.24.2
+
+  '@agentic/firecrawl@7.6.4':
+    resolution: {integrity: sha512-c7U20jTsxNH7d97DNRMNEdJRVEs0lY1jT+9chZOMHWUYam+mIAhmyhXkhGO7puBILcG82BCQGqdl8VyFVPV9RQ==}
+    peerDependencies:
+      zod: ^3.24.2
+
+  '@agentic/tavily@7.6.4':
+    resolution: {integrity: sha512-IWi98u+m4gsG5752LRvyRtEAzOL9o8i4co2YlWakFgFYeq1S5mpIEjMabPnGfl2zKa2befOWSZHjNgprDDDESA==}
+    peerDependencies:
+      zod: ^3.24.2
 
   '@ai-sdk/openai@0.0.37':
     resolution: {integrity: sha512-OBhnvptzOEn+jy75vySnhbH5ezidn4WI/yftc0C1MiWkS/m4CmRV9P5zFGKHOgC1vxtw6691gASGYpQbof/JoQ==}
@@ -1944,6 +1973,14 @@ packages:
   decode-named-character-reference@1.1.0:
     resolution: {integrity: sha512-Wy+JTSbFThEOXQIR2L6mxJvEs+veIzpmqD7ynWxMXGpnk3smkHQOp6forLdHsKpAMW9iJpaBBIxz285t1n1C3w==}
 
+  dedent@1.5.3:
+    resolution: {integrity: sha512-NHQtfOOW68WD8lgypbLA5oT+Bt0xXJhiYvoR6SmmNXZfpzOGXwdKWmcwG8N7PwVVWV3eF/68nmD9BaJSsTBhyQ==}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
@@ -1954,6 +1991,10 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
+
+  delay@6.0.0:
+    resolution: {integrity: sha512-2NJozoOHQ4NuZuVIr5CWd0iiLVIRSDepakaovIN+9eIDHEhdCAEvSy2cuf1DCrPPQLvHmbqTHODlhHg8UCy4zw==}
+    engines: {node: '>=16'}
 
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
@@ -2701,12 +2742,20 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
+  jsonrepair@3.12.0:
+    resolution: {integrity: sha512-SWfjz8SuQ0wZjwsxtSJ3Zy8vvLg6aO/kxcp9TWNPGwJKgTZVfhNEQBMk/vPOpYCDFWRxD6QWuI6IHR1t615f0w==}
+    hasBin: true
+
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  ky@1.8.1:
+    resolution: {integrity: sha512-7Bp3TpsE+L+TARSnnDpk3xg8Idi8RwSLdj6CMbNWoOARIrGrbuLGusV0dYwbZOm4bB3jHNxSw8Wk/ByDqJEnDw==}
+    engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -3060,6 +3109,12 @@ packages:
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
 
+  openai-zod-to-json-schema@1.0.3:
+    resolution: {integrity: sha512-CFU+KtOmX1dk2nPCZcGYgbrI3YLJJgMSehx1mLbH1A2fsRmZevHzMau6vFIhtkCpHWkGQ3ossA4a0OzVHlGrkw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.23.8
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -3078,6 +3133,10 @@ packages:
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
+
+  p-throttle@6.2.0:
+    resolution: {integrity: sha512-NCKkOVj6PZa6NiTmfvGilDdf6vO1rFCD3KDnkHko8dTOtkpk4cSR/VTAhhLMG9aiQ7/A9HYgEDNmxzf6hxzR3g==}
+    engines: {node: '>=18'}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
@@ -3705,6 +3764,10 @@ packages:
     resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
     engines: {node: '>=10'}
 
+  type-fest@4.40.1:
+    resolution: {integrity: sha512-9YvLNnORDpI+vghLU/Nf+zSv0kL47KbVJ1o3sKgoTefl6i+zebxbiDQWoe/oWWqPhIgQdRZRT1KA9sCPL810SA==}
+    engines: {node: '>=16'}
+
   typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}
     engines: {node: '>= 0.4'}
@@ -3866,6 +3929,12 @@ packages:
     peerDependencies:
       zod: ^3.24.1
 
+  zod-validation-error@3.4.0:
+    resolution: {integrity: sha512-ZOPR9SVY6Pb2qqO5XHt+MkkTRxGXb4EVtnjc9JpXUOtUB1T9Ru7mZOT361AN3MsetVe7R0a1KZshJDZdgp9miQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      zod: ^3.18.0
+
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
@@ -3873,6 +3942,46 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@agentic/ai-sdk@7.6.4(ai@4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2))(zod@3.24.2)':
+    dependencies:
+      '@agentic/core': 7.6.4(zod@3.24.2)
+      ai: 4.3.4(react@19.0.0-rc-45804af1-20241021)(zod@3.24.2)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - zod
+
+  '@agentic/core@7.6.4(zod@3.24.2)':
+    dependencies:
+      dedent: 1.5.3
+      delay: 6.0.0
+      jsonrepair: 3.12.0
+      ky: 1.8.1
+      openai-zod-to-json-schema: 1.0.3(zod@3.24.2)
+      p-throttle: 6.2.0
+      type-fest: 4.40.1
+      zod: 3.24.2
+      zod-validation-error: 3.4.0(zod@3.24.2)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+
+  '@agentic/firecrawl@7.6.4(zod@3.24.2)':
+    dependencies:
+      '@agentic/core': 7.6.4(zod@3.24.2)
+      ky: 1.8.1
+      p-throttle: 6.2.0
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - babel-plugin-macros
+
+  '@agentic/tavily@7.6.4(zod@3.24.2)':
+    dependencies:
+      '@agentic/core': 7.6.4(zod@3.24.2)
+      ky: 1.8.1
+      p-throttle: 6.2.0
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - babel-plugin-macros
 
   '@ai-sdk/openai@0.0.37(zod@3.24.2)':
     dependencies:
@@ -5323,6 +5432,8 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
+  dedent@1.5.3: {}
+
   deep-is@0.1.4: {}
 
   define-data-property@1.1.4:
@@ -5336,6 +5447,8 @@ snapshots:
       define-data-property: 1.1.4
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
+
+  delay@6.0.0: {}
 
   dequal@2.0.3: {}
 
@@ -6239,6 +6352,8 @@ snapshots:
       chalk: 5.4.1
       diff-match-patch: 1.0.5
 
+  jsonrepair@3.12.0: {}
+
   jsx-ast-utils@3.3.5:
     dependencies:
       array-includes: 3.1.8
@@ -6249,6 +6364,8 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  ky@1.8.1: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -6792,6 +6909,10 @@ snapshots:
     dependencies:
       wrappy: 1.0.2
 
+  openai-zod-to-json-schema@1.0.3(zod@3.24.2):
+    dependencies:
+      zod: 3.24.2
+
   optionator@0.9.4:
     dependencies:
       deep-is: 0.1.4
@@ -6816,6 +6937,8 @@ snapshots:
   p-locate@5.0.0:
     dependencies:
       p-limit: 3.1.0
+
+  p-throttle@6.2.0: {}
 
   package-json-from-dist@1.0.1: {}
 
@@ -7566,6 +7689,8 @@ snapshots:
 
   type-fest@0.20.2: {}
 
+  type-fest@4.40.1: {}
+
   typed-array-buffer@1.0.3:
     dependencies:
       call-bound: 1.0.4
@@ -7761,6 +7886,10 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod-to-json-schema@3.24.5(zod@3.24.2):
+    dependencies:
+      zod: 3.24.2
+
+  zod-validation-error@3.4.0(zod@3.24.2):
     dependencies:
       zod: 3.24.2
 

@@ -25,8 +25,18 @@ import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
 import { postRequestBodySchema, type PostRequestBody } from './schema';
+import { FirecrawlClient } from '@agentic/firecrawl';
+import { TavilyClient } from '@agentic/tavily';
+import { createAISDKTools } from '@agentic/ai-sdk';
 
 export const maxDuration = 60;
+
+// Instantiate Agentic clients
+const firecrawl = new FirecrawlClient();
+const tavily = new TavilyClient();
+
+// Create AI SDK compatible tools
+const agenticTools = createAISDKTools({ firecrawl, tavily });
 
 // Define the schema without selectedChatModel
 const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
@@ -87,7 +97,6 @@ export async function POST(request: Request) {
     const previousMessages = await getMessagesByChatId({ id });
 
     const messages = appendClientMessage({
-      // @ts-expect-error: todo add type conversion from DBMessage[] to UIMessage[]
       messages: previousMessages,
       message,
     });
@@ -105,89 +114,103 @@ export async function POST(request: Request) {
       ],
     });
 
+    // --- Tavily Search Call --- 
+    try {
+      console.log(`[Tavily] Searching for: ${message.content}`);
+      const searchResults = await tavily.search(message.content);
+      console.log('[Tavily] Search Results:', JSON.stringify(searchResults, null, 2));
+      // TODO: Use searchResults to augment messages or context for the LLM if needed
+    } catch (error) {
+      console.error('[Tavily] Search failed:', error);
+      // Decide how to handle Tavily errors (e.g., proceed without search results?)
+    }
+    // --- End Tavily Search Call ---
+
+    // Define execute function within scope to capture variables
+    const executeStream = (dataStream: any) => {
+       const result = streamText({
+         model: myProvider.languageModel(selectedChatModel),
+         system: systemPrompt({ selectedChatModel }),
+         messages,
+         maxSteps: 5, 
+         experimental_activeTools:
+           selectedChatModel === 'chat-model-reasoning'
+             ? []
+             : [ 
+                 'getWeather',
+                 'createDocument',
+                 'updateDocument',
+                 'requestSuggestions',
+                 ...Object.keys(agenticTools), 
+               ],
+         experimental_transform: smoothStream({ chunking: 'word' }),
+         experimental_generateMessageId: generateUUID,
+         tools: {
+           getWeather,
+           createDocument: createDocument({ session, dataStream }),
+           updateDocument: updateDocument({ session, dataStream }),
+           requestSuggestions: requestSuggestions({
+             session,
+             dataStream,
+           }),
+           ...agenticTools, 
+         },
+         onFinish: async ({ response }: { response: any }) => {
+           if (session.user?.id) {
+             try {
+               const assistantId = getTrailingMessageId({
+                 messages: response.messages.filter(
+                   (message: any) => message.role === 'assistant',
+                 ),
+               });
+
+               if (!assistantId) {
+                 throw new Error('No assistant message found!');
+               }
+
+               const [, assistantMessage] = appendResponseMessages({
+                 messages: [message], // Ensure 'message' (the user message) is captured correctly
+                 responseMessages: response.messages,
+               });
+
+               await saveMessages({
+                 messages: [
+                   {
+                     id: assistantId,
+                     chatId: id, // Ensure 'id' (chatId) is captured correctly
+                     role: assistantMessage.role,
+                     parts: assistantMessage.parts,
+                     attachments:
+                       assistantMessage.experimental_attachments ?? [],
+                     createdAt: new Date(),
+                   },
+                 ],
+               });
+             } catch (_) {
+               console.error('Failed to save chat');
+             }
+           }
+         },
+         experimental_telemetry: {
+           isEnabled: isProductionEnvironment,
+           functionId: 'stream-text',
+         },
+       });
+
+       result.consumeStream();
+
+       result.mergeIntoDataStream(dataStream, {
+         sendReasoning: true,
+       });
+    };
+
     return createDataStreamResponse({
-      execute: (dataStream) => {
-        const result = streamText({
-          model: myProvider.languageModel('chat-model-reasoning'),
-          // Keep the system prompt as it was or adjust if needed
-          system: systemPrompt({ selectedChatModel: 'chat-model-reasoning' }),
-          messages,
-          maxSteps: 5,
-          // Add providerOptions here
-          providerOptions: {
-            xai: {
-              reasoningEffort: 'high',
-            },
-          },
-          experimental_activeTools: [
-            'getWeather',
-            'createDocument',
-            'updateDocument',
-            'requestSuggestions',
-          ],
-          experimental_transform: smoothStream({ chunking: 'word' }),
-          experimental_generateMessageId: generateUUID,
-          tools: {
-            getWeather,
-            createDocument: createDocument({ session, dataStream }),
-            updateDocument: updateDocument({ session, dataStream }),
-            requestSuggestions: requestSuggestions({
-              session,
-              dataStream,
-            }),
-          },
-          onFinish: async ({ response }) => {
-            if (session.user?.id) {
-              try {
-                const assistantId = getTrailingMessageId({
-                  messages: response.messages.filter(
-                    (message) => message.role === 'assistant',
-                  ),
-                });
-
-                if (!assistantId) {
-                  throw new Error('No assistant message found!');
-                }
-
-                const [, assistantMessage] = appendResponseMessages({
-                  messages: [message],
-                  responseMessages: response.messages,
-                });
-
-                await saveMessages({
-                  messages: [
-                    {
-                      id: assistantId,
-                      chatId: id,
-                      role: assistantMessage.role,
-                      parts: assistantMessage.parts,
-                      attachments:
-                        assistantMessage.experimental_attachments ?? [],
-                      createdAt: new Date(),
-                    },
-                  ],
-                });
-              } catch (_) {
-                console.error('Failed to save chat');
-              }
-            }
-          },
-          experimental_telemetry: {
-            isEnabled: isProductionEnvironment,
-            functionId: 'stream-text',
-          },
-        });
-
-        result.consumeStream();
-
-        result.mergeIntoDataStream(dataStream, {
-          sendReasoning: true,
-        });
-      },
+      execute: executeStream, // Pass the function here
       onError: () => {
         return 'Oops, an error occurred!';
       },
     });
+
   } catch (_) {
     return new Response('An error occurred while processing your request!', {
       status: 500,
