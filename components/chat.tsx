@@ -20,14 +20,16 @@ import type { Session } from 'next-auth';
 export function Chat({
   id,
   initialMessages,
-  selectedChatModel,
+  // Remove selectedChatModel prop
+  // selectedChatModel,
   selectedVisibilityType,
   isReadonly,
   session,
 }: {
   id: string;
   initialMessages: Array<UIMessage>;
-  selectedChatModel: string;
+  // Remove selectedChatModel prop type
+  // selectedChatModel: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
   session: Session;
@@ -53,7 +55,8 @@ export function Chat({
     experimental_prepareRequestBody: (body) => ({
       id,
       message: body.messages.at(-1),
-      selectedChatModel,
+      // Remove selectedChatModel from here
+      // selectedChatModel,
     }),
     onFinish: () => {
       mutate(unstable_serialize(getChatHistoryPaginationKey));
@@ -79,7 +82,8 @@ export function Chat({
       <div className="flex flex-col min-w-0 h-dvh bg-background">
         <ChatHeader
           chatId={id}
-          selectedModelId={selectedChatModel}
+          // Remove selectedModelId prop
+          // selectedModelId={selectedChatModel}
           selectedVisibilityType={selectedVisibilityType}
           isReadonly={isReadonly}
           session={session}

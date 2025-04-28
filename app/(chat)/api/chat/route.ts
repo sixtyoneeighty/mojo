@@ -28,18 +28,25 @@ import { postRequestBodySchema, type PostRequestBody } from './schema';
 
 export const maxDuration = 60;
 
+// Define the schema without selectedChatModel
+const simplifiedPostRequestBodySchema = postRequestBodySchema.omit({ selectedChatModel: true });
+type SimplifiedPostRequestBody = Omit<PostRequestBody, 'selectedChatModel'>;
+
+
 export async function POST(request: Request) {
-  let requestBody: PostRequestBody;
+  let requestBody: SimplifiedPostRequestBody; // Use the simplified type
 
   try {
     const json = await request.json();
-    requestBody = postRequestBodySchema.parse(json);
+    // Parse using the simplified schema
+    requestBody = simplifiedPostRequestBodySchema.parse(json);
   } catch (_) {
     return new Response('Invalid request body', { status: 400 });
   }
 
   try {
-    const { id, message, selectedChatModel } = requestBody;
+    // Remove selectedChatModel from destructuring
+    const { id, message } = requestBody;
 
     const session = await auth();
 
@@ -101,19 +108,23 @@ export async function POST(request: Request) {
     return createDataStreamResponse({
       execute: (dataStream) => {
         const result = streamText({
-          model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel }),
+          model: myProvider.languageModel('chat-model-reasoning'),
+          // Keep the system prompt as it was or adjust if needed
+          system: systemPrompt({ selectedChatModel: 'chat-model-reasoning' }),
           messages,
           maxSteps: 5,
-          experimental_activeTools:
-            selectedChatModel === 'chat-model-reasoning'
-              ? []
-              : [
-                  'getWeather',
-                  'createDocument',
-                  'updateDocument',
-                  'requestSuggestions',
-                ],
+          // Add providerOptions here
+          providerOptions: {
+            xai: {
+              reasoningEffort: 'high',
+            },
+          },
+          experimental_activeTools: [
+            'getWeather',
+            'createDocument',
+            'updateDocument',
+            'requestSuggestions',
+          ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           experimental_generateMessageId: generateUUID,
           tools: {
